@@ -1,6 +1,21 @@
 <script>
   export let data;
 
+  import { createRoom } from "./Venues/ObjectData.js";
+
+  let output = [];
+  $: {
+    let result = [];
+    for (let [venue, rooms] of Object.entries($data.venueData)) {
+      for (let roomSize in rooms) {
+        for (let roomName of rooms[roomSize]) {
+          result.push(createRoom(venue, roomName, roomSize));
+        }
+      }
+    }
+
+    output = [...result, ...$data.commands];
+  }
   let copyButtonText = "Copy";
   import { Button } from "svelma";
 
@@ -36,8 +51,9 @@
   }
 
   function copyEvt() {
-    // TODO: Update copy function to copy elements as several JSON objects separated by new lines
-    copyTextToClipboard(JSON.stringify($data), () => {
+    let contents = output.map(o => JSON.stringify(o)).join("\n");
+
+    copyTextToClipboard(JSON.stringify(contents), () => {
       let oldText = copyButtonText;
       copyButtonText = "Copied!";
       setTimeout(() => (copyButtonText = oldText), 2000);
@@ -67,7 +83,12 @@
   <h1 class="is-size-2">Preview</h1>
 
   <div class="copyBtnContainer">
-    <Button on:click={copyEvt}>{copyButtonText}</Button>
+    <Button on:click={copyEvt} disabled={!output.length}>
+      {copyButtonText}
+    </Button>
   </div>
-  <pre class="prettyCode">{JSON.stringify($data, null, 2)}</pre>
+  <pre class="prettyCode">
+    <!-- {output.length ? JSON.stringify(output, null, 2) : ''} -->
+    {JSON.stringify($data, null, 2)}
+  </pre>
 </section>

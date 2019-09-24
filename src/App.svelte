@@ -1,40 +1,82 @@
 <script>
   import { writable } from "svelte/store";
 
-  const data = writable({});
+  const data = writable({ venueData: {}, commands: [] });
 
+  import { Icon } from "svelma";
   import PrettyCode from "./PrettyCode.svelte";
   import Form from "./Form.svelte";
 </script>
 
 <style>
-  .code-panel {
-    padding: 0;
-    background-color: #f5f5f5;
-  }
-
   .wrapper {
     display: flex;
     height: 100%;
     flex-direction: column;
+    -webkit-user-select: none;
+    user-select: none;
   }
 
   .columns {
     flex: 1;
   }
+
+  .code-panel {
+    padding: 0;
+    background-color: #f5f5f5;
+  }
+
+  .footer {
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer .links,
+  .footer .links a {
+    display: flex;
+    align-items: center;
+  }
+  .footer .links a:not(:first-child) {
+    border-left: 2px solid #a7a7a7;
+  }
+  .footer .links a {
+    padding: 5px;
+    color: #a7a7a7;
+    text-decoration: none;
+  }
+  .footer .links a:not(:hover) {
+    transition: color 1s;
+  }
+  .footer .links a:hover {
+    color: white;
+  }
 </style>
 
 <div class="wrapper">
   <div class="columns is-marginless">
-    <div class="column has-background-primary">
+    <div class="column has-background-white">
       <div class="section">
         <Form {data} />
       </div>
     </div>
-    <div class="code-panel column is-one-fifth is-primary">
+    <div class="code-panel column is-one-fifth">
       <PrettyCode {data} />
     </div>
   </div>
 
-  <footer class="footer">Foota</footer>
+  <footer class="footer has-background-dark has-text-light">
+    <span>UNSW COMP2511 | 19T3 Assignment One | Venue Hire System Helper</span>
+    <div class="links">
+      <a href="/">
+        <Icon pack="fab" size="is-medium" icon="github" />
+        GitHub
+      </a>
+      <a href="https://featherbear.github.io/UNSW-COMP2511/">
+        <Icon pack="far" size="is-medium" icon="edit" />
+        Blog
+      </a>
+    </div>
+  </footer>
 </div>

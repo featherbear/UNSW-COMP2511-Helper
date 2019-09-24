@@ -1,23 +1,44 @@
 <script>
   export let data;
 
-  import { Button, Field, Input } from "svelma";
+  import { Snackbar, Button, Field, Icon } from "svelma";
   import MultilineDialog from "./MultilineDialog.js";
 
-  function loadJSONLines(json_lines) {
-    try {
-      let lines = json_lines
-        .trim()
-        .replace(/\r/g, "")
-        .split("\n");
+  import ObjectData from "./Venues/ObjectData.js";
+  import VenueManager from "./Venues/VenueManager.svelte";
 
-      $data = lines.map(JSON.parse);
-      // TODO: Finish this
-    } catch (err) {
-      console.log(err);
-      // TODO: Do something with the error
+  function loadJSONLines(json_lines) {
+    let lines = json_lines
+      .trim()
+      .replace(/\r/g, "")
+      .split("\n");
+
+    lines = lines.map(JSON.parse);
+
+    let venueData = {};
+    let commands = [];
+
+    for (let command of lines) {
+      if (ObjectData.getType(command) == "room") {
+        if (!(command.venue in venueData)) {
+          venueData[command.venue] = {
+            small: [],
+            medium: [],
+            large: []
+          };
+        }
+        venueData[command.venue][command.size].push(command.room);
+      } else {
+        commands.push(command);
+      }
     }
+
+    $data = {
+      venueData,
+      commands
+    };
   }
+
   function prompt() {
     MultilineDialog.prompt({
       title: "Enter JSON",
@@ -35,22 +56,59 @@
 { "command": "list", "venue": "Zoo" }`
     }).then(r => {
       if (r) {
-        loadJSONLines(r);
+        try {
+          loadJSONLines(r);
+          Snackbar.create({
+            message: "JSON loaded!",
+            type: "is-success"
+          });
+        } catch (e) {
+          Snackbar.create({
+            message: `Error: ${e}`,
+            type: "is-danger",
+            duration: 5000
+          });
+        }
       }
     });
   }
+
+  let venueNameInput = "";
+  let venues = {};
+  function inputKeyDownEvent(e) {
+    e.keyCode && e.keyCode === 13 && addVenueEvent();
+  }
+  function addVenueEvent() {
+    if (!venueNameInput) return;
+    if (!(venueNameInput in $data.venueData)) {
+      $data.venueData[venueNameInput] = {
+        small: [],
+        medium: [],
+        large: []
+      };
+    }
+    venueNameInput = "";
+  }
 </script>
 
-<Button on:click={prompt}>Load</Button>
+<Button on:click={prompt}>Import JSON strings</Button>
 
-<!-- <Field label="Name">
-  <Input value="Rich Harris" />
+<Field grouped>
+  <div class="control has-icons-left">
+    <input
+      placeholder="Venue name"
+      icon="plus"
+      type="text"
+      class="input"
+      bind:value={venueNameInput}
+      on:keydown={inputKeyDownEvent} />
+    <Icon pack="fas" icon="plus" isLeft="true" />
+  </div>
+  <p class="control">
+    <Button type="is-primary" on:click={addVenueEvent}>Add venue</Button>
+  </p>
 </Field>
 
-<Field label="Email" type="is-danger" message="Email is invalid">
-  <Input value="john@" />
-</Field>
-
-<Field label="Username" type="is-success" message="Username is available">
-  <Input value="joey55" />
-</Field> -->
+{#each Object.keys(venues) as venueName}
+  <VenueManager data={$data[venueName]} />
+{/each}

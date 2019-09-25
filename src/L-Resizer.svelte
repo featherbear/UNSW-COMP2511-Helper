@@ -2,7 +2,7 @@
   export let target;
 
   const minRatio = 0.05;
-  const maxRatio = 0.5;
+  const maxRatio = 0.6;
 
   /* START Drag events */
   let isDragging = false;

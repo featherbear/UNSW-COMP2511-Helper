@@ -4,6 +4,10 @@
   const data = writable({ venueData: {}, commands: [] });
 
   import { Icon } from "svelma";
+
+  import LResizer from "./L-Resizer.svelte";
+  let codePanel;
+
   import PrettyCode from "./PrettyCode.svelte";
   import Form from "./Form.svelte";
 </script>
@@ -52,6 +56,11 @@
   .footer .links a:hover {
     color: white;
   }
+
+  .l-flex {
+    display: flex;
+    flex-direction: row;
+  }
 </style>
 
 <div class="wrapper">
@@ -61,7 +70,8 @@
         <Form {data} />
       </div>
     </div>
-    <div class="code-panel column is-one-fifth">
+    <div class="code-panel column is-one-fifth l-flex" bind:this={codePanel}>
+      <LResizer target={codePanel} />
       <PrettyCode {data} />
     </div>
   </div>

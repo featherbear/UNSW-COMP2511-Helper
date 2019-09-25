@@ -1,11 +1,12 @@
 <script>
   export let data;
 
-  import { Snackbar, Button, Field, Icon } from "svelma";
+  import { Snackbar, Button, Field } from "svelma";
   import MultilineDialog from "./MultilineDialog.js";
 
   import ObjectData from "./Venues/ObjectData.js";
   import VenueManager from "./Venues/VenueManager.svelte";
+  import MyInput from "./MyInput.svelte";
 
   function loadJSONLines(json_lines) {
     let lines = json_lines
@@ -74,7 +75,6 @@
   }
 
   let venueNameInput = "";
-  let venues = {};
   function inputKeyDownEvent(e) {
     e.keyCode && e.keyCode === 13 && addVenueEvent();
   }
@@ -91,24 +91,31 @@
   }
 </script>
 
+<style>
+  .thirdFlow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+</style>
+
 <Button on:click={prompt}>Import JSON strings</Button>
 
+<div class="thirdFlow">
+  {#each Object.keys($data.venueData) as venueName}
+    <VenueManager name={venueName} {data} />
+  {/each}
+</div>
+
 <Field grouped>
-  <div class="control has-icons-left">
-    <input
-      placeholder="Venue name"
-      icon="plus"
-      type="text"
-      class="input"
-      bind:value={venueNameInput}
-      on:keydown={inputKeyDownEvent} />
-    <Icon pack="fas" icon="plus" isLeft="true" />
-  </div>
+  <MyInput
+    bind:value={venueNameInput}
+    on:keydown={inputKeyDownEvent}
+    placeholder="Venue name"
+    icon="building"
+    pack="far" />
   <p class="control">
     <Button type="is-primary" on:click={addVenueEvent}>Add venue</Button>
   </p>
 </Field>
-
-{#each Object.keys(venues) as venueName}
-  <VenueManager data={$data[venueName]} />
-{/each}

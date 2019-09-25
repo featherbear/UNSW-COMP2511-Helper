@@ -53,7 +53,7 @@
   function copyEvt() {
     let contents = output.map(o => JSON.stringify(o)).join("\n");
 
-    copyTextToClipboard(JSON.stringify(contents), () => {
+    copyTextToClipboard(contents, () => {
       let oldText = copyButtonText;
       copyButtonText = "Copied!";
       setTimeout(() => (copyButtonText = oldText), 2000);

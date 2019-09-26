@@ -5,11 +5,12 @@
 
   import { Icon } from "svelma";
 
-  import LResizer from "./L-Resizer.svelte";
-  let codePanel;
+  import LResizer from "./components/L-Resizer.svelte";
 
   import PrettyCode from "./PrettyCode.svelte";
   import Form from "./Form.svelte";
+
+  let codePanel;
 </script>
 
 <style>

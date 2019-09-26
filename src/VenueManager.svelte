@@ -2,22 +2,21 @@
   export let data;
   export let name;
   import { Button, Field } from "svelma";
-  import MyInput from "../MyInput.svelte";
-  import ListItem from "./ListItem.svelte";
+
+  import MyInput from "./components/MyInput.svelte";
+  import ListItem from "./components/ListItem.svelte";
+
+  import { keyDownEventFactory, objKeys } from "./utils.js";
 
   let roomNameInput = "";
   let sizeSelectElement;
   let sizeInput = "";
 
-  function inputKeyDownEvent(e) {
-    e.keyCode && e.keyCode === 13 && addRoomEvent();
-  }
-
   function addRoomEvent() {
     if (!roomNameInput) return;
     if (!sizeInput) return;
-    // Check if room does not exist in the size?
-    // TODO:  (any?)
+
+    // Assumption - a room can only have one size
     if ($data.venueData[name][sizeInput].indexOf(roomNameInput) == -1) {
       $data.venueData[name][sizeInput] = [
         ...$data.venueData[name][sizeInput],
@@ -28,39 +27,6 @@
     sizeSelectElement.value = sizeInput = "";
     roomNameInput = "";
   }
-
-  // let rooms;
-  // $: {
-  //   let tempRooms = [];
-  //   for (let roomSize of Object.keys($data.venueData[name])) {
-  //     tempRooms.push(
-  //       ...$data.venueData[name][roomSize].map(n => `${n} - ${roomSize}`)
-  //     );
-  //   }
-  //   rooms = tempRooms;
-  // }
-
-  const tools = {
-    pack(obj) {
-      // Convert {key: value} into {value: [key, ...]}
-      let res = {};
-      for (let [key, val] of Object.entries(obj)) {
-        if (!(val in res)) res[val] = [];
-        res[val].push(key);
-      }
-      return res;
-    },
-    unpack(obj) {
-      // Convert {value: [key, ...]} into {key: value}
-      let res = {};
-      for (let [val, keys] of Object.entries(obj)) {
-        for (let key of keys) {
-          res[key] = val;
-        }
-      }
-      return res;
-    }
-  };
 </script>
 
 <style>
@@ -82,7 +48,7 @@
   <div class="card-content">
     <div class="content">
       <ul class="roomList">
-        {#each Object.entries(tools.unpack($data.venueData[name])) as [roomName, size]}
+        {#each Object.entries(objKeys.unpack($data.venueData[name])) as [roomName, size]}
           <ListItem
             pack="fas"
             icon="times"
@@ -95,7 +61,7 @@
       <Field grouped>
         <MyInput
           bind:value={roomNameInput}
-          on:keydown={inputKeyDownEvent}
+          on:keydown={keyDownEventFactory(addRoomEvent)}
           placeholder="Room name"
           icon="door-open"
           pack="fas"
@@ -119,9 +85,4 @@
 
     </div>
   </div>
-  <!-- <footer class="card-footer">
-    <a href="#" class="card-footer-item">Save</a>
-    <a href="#" class="card-footer-item">Edit</a>
-    <a href="#" class="card-footer-item">Delete</a>
-  </footer> -->
 </div>

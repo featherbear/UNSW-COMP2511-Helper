@@ -1,7 +1,7 @@
 <script>
   export let data;
 
-  import { createRoom } from "./Venues/ObjectData.js";
+  import { createRoom } from "./ObjectData.js";
 
   let output = [];
   $: {

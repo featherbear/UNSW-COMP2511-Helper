@@ -4,7 +4,7 @@
   export let pack = "fas";
   export let icon;
 
-  let class_extra;
+  let class_extra = "";
   export { class_extra as class };
 
   import { Icon } from "svelma";

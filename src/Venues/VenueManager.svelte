@@ -3,6 +3,7 @@
   export let name;
   import { Button, Field } from "svelma";
   import MyInput from "../MyInput.svelte";
+  import ListItem from "./ListItem.svelte";
 
   let roomNameInput = "";
   let sizeSelectElement;
@@ -27,6 +28,39 @@
     sizeSelectElement.value = sizeInput = "";
     roomNameInput = "";
   }
+
+  // let rooms;
+  // $: {
+  //   let tempRooms = [];
+  //   for (let roomSize of Object.keys($data.venueData[name])) {
+  //     tempRooms.push(
+  //       ...$data.venueData[name][roomSize].map(n => `${n} - ${roomSize}`)
+  //     );
+  //   }
+  //   rooms = tempRooms;
+  // }
+
+  const tools = {
+    pack(obj) {
+      // Convert {key: value} into {value: [key, ...]}
+      let res = {};
+      for (let [key, val] of Object.entries(obj)) {
+        if (!(val in res)) res[val] = [];
+        res[val].push(key);
+      }
+      return res;
+    },
+    unpack(obj) {
+      // Convert {value: [key, ...]} into {key: value}
+      let res = {};
+      for (let [val, keys] of Object.entries(obj)) {
+        for (let key of keys) {
+          res[key] = val;
+        }
+      }
+      return res;
+    }
+  };
 </script>
 
 <style>
@@ -42,7 +76,17 @@
   </header>
   <div class="card-content">
     <div class="content">
-      {JSON.stringify($data.venueData[name])}
+      <ul>
+        {#each Object.entries(tools.unpack($data.venueData[name])) as [roomName, size]}
+          <ListItem
+            pack="fas"
+            icon="times"
+            label={`${roomName} - ${size}`}
+            on:click={() => {
+              $data.venueData[name][size] = $data.venueData[name][size].filter(e => e != roomName);
+            }} />
+        {/each}
+      </ul>
       <Field grouped>
         <MyInput
           bind:value={roomNameInput}
@@ -52,7 +96,6 @@
           pack="fas" />
 
         <div class="control">
-
           <div class="select">
             <select bind:value={sizeInput} bind:this={sizeSelectElement}>
               <option disabled selected value />

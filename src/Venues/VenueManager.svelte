@@ -65,8 +65,13 @@
 
 <style>
   .elem {
-    flex-basis: 48%;
-    margin: 10px auto;
+    flex-basis: 49.5%;
+    margin-top: 5px;
+  }
+
+  .roomList {
+    margin-left: 0;
+    margin-top: 0;
   }
 </style>
 
@@ -76,7 +81,7 @@
   </header>
   <div class="card-content">
     <div class="content">
-      <ul>
+      <ul class="roomList">
         {#each Object.entries(tools.unpack($data.venueData[name])) as [roomName, size]}
           <ListItem
             pack="fas"
@@ -93,7 +98,8 @@
           on:keydown={inputKeyDownEvent}
           placeholder="Room name"
           icon="door-open"
-          pack="fas" />
+          pack="fas"
+          class="flex-shrink" />
 
         <div class="control">
           <div class="select">
@@ -105,6 +111,7 @@
             </select>
           </div>
         </div>
+
         <p class="control">
           <Button type="is-primary" on:click={addRoomEvent}>Add room</Button>
         </p>

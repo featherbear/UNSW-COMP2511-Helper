@@ -69,3 +69,7 @@ button:focus {
 .isPointer {
   cursor: pointer;
 }
+
+.flex-shrink {
+  flex-shrink: 1 !important;
+}

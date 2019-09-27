@@ -10,6 +10,19 @@
     padding-left: 0;
     padding-right: 0;
   }
+
+  :global(.dragger) {
+    cursor: move;
+    cursor: grab;
+    cursor: -moz-grab;
+    cursor: -webkit-grab;
+  }
+
+  :global(.dragger:active) {
+    cursor: grabbing;
+    cursor: -moz-grabbing;
+    cursor: -webkit-grabbing;
+  }
 </style>
 
 <tr>
@@ -19,5 +32,7 @@
     </Button>
   </td>
   <slot />
-  <td>//TODO: _RESIZER_</td>
+  <td>
+    <Icon customClass="dragger" icon="grip-lines" pack="fas" />
+  </td>
 </tr>

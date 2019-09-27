@@ -18,6 +18,10 @@
   li:not(:hover) .icon {
     display: none;
   }
+
+  :global(.isPointer) {
+    cursor: pointer;
+  }
 </style>
 
 <li>

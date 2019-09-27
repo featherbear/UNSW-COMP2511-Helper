@@ -9,6 +9,7 @@
   import { keyDownEventFactory } from "./utils.js";
 
   import VenueManager from "./VenueManager.svelte";
+  import CommandManager from "./CommandManager.svelte";
 
   // Store parsed JSON lines into $data store
   function loadJSONLines(json_lines) {
@@ -84,3 +85,5 @@
     <Button type="is-primary" on:click={addVenueEvent}>Add venue</Button>
   </p>
 </Field>
+
+<CommandManager {data} />

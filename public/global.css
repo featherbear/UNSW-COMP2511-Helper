@@ -66,10 +66,5 @@ button:focus {
   border-color: #666;
 }
 
-.isPointer {
-  cursor: pointer;
-}
 
-.flex-shrink {
-  flex-shrink: 1 !important;
-}
+

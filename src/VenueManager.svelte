@@ -39,6 +39,10 @@
     margin-left: 0;
     margin-top: 0;
   }
+
+  :global(.flex-shrink) {
+    flex-shrink: 1 !important;
+  }
 </style>
 
 <div class="card elem">

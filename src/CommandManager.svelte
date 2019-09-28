@@ -5,12 +5,12 @@
 
   let tableRows;
 
-  import Swappable from "@shopify/draggable/lib/swappable.js";
+  import Sortable from "@shopify/draggable/lib/sortable.js";
 
   import { onMount } from "svelte";
 
   onMount(() => {
-    const swappable = new Swappable(tableRows, {
+    const sortable = new Sortable(tableRows, {
       draggable: "tr",
       handle: ".dragger",
       mirror: {
@@ -18,17 +18,14 @@
         xAxis: false
       }
     });
-    swappable.on("swappable:swapped", function(e) {
-      let cur = parseInt(
-        e.data.dragEvent.data.source.getAttribute("orderingId")
-      );
-      let sw = parseInt(e.data.swappedElement.getAttribute("orderingId"));
+    sortable.on("sortable:sorted", function(e) {
+      let { newIndex, oldIndex } = e.data;
 
-      let idx_cur = $data.commandsOrder.indexOf(cur);
-      let idx_sw = $data.commandsOrder.indexOf(sw);
+      let val_new = $data.commandsOrder[newIndex];
+      let val_old = $data.commandsOrder[oldIndex];
 
-      $data.commandsOrder[idx_cur] = sw;
-      $data.commandsOrder[idx_sw] = cur;
+      $data.commandsOrder[oldIndex] = val_new;
+      $data.commandsOrder[newIndex] = val_old;
     });
   });
 </script>

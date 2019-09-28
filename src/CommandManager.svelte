@@ -36,6 +36,7 @@
       <Base
         on:delete={() => {
           $data.commandsOrder = $data.commandsOrder.filter(i => i != commandId);
+          delete $data.commands[commandId];
         }}
         orderingId={commandId}>
         <svelte:component

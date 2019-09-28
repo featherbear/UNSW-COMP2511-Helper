@@ -1,7 +1,7 @@
 <script>
   export let data;
 
-  import { createRoom } from "./ObjectData.js";
+  import { createRoom, dateToString } from "./ObjectData.js";
 
   let output = [];
   $: {
@@ -16,7 +16,12 @@
 
     let commands = [];
     for (let idx of $data.commandsOrder) {
-      commands.push($data.commands[idx]);
+      let query = { ...$data.commands[idx] };
+
+      // if ("start" in query) query.start = dateToString(query.start);
+      // if ("end" in query) query.end = dateToString(query.end);
+
+      commands.push(query);
     }
 
     output = [...result, ...commands];

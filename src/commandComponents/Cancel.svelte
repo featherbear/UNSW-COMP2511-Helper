@@ -1,7 +1,13 @@
 <script>
-  export let command;
-  export let id;
+  export let data;
 </script>
 
-<td>Cancel</td>
-<td colspan="6">ID {id}</td>
+<td class="has-text-centered">
+  <span class="tag is-danger">Cancel</span>
+</td>
+<td colspan="6">
+  <div class="tags has-addons">
+    <span class="tag is-dark">ID</span>
+    <span class="tag is-light">{data.id}</span>
+  </div>
+</td>

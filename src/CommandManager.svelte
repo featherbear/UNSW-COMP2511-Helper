@@ -40,7 +40,7 @@
         orderingId={commandId}>
         <svelte:component
           this={commandComponents.resolve($data.commands[commandId])}
-          {...$data.commands[commandId]} />
+          bind:data={$data.commands[commandId]} />
       </Base>
     {/each}
   </tbody>

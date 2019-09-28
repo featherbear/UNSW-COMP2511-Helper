@@ -87,3 +87,10 @@
 </Field>
 
 <CommandManager {data} />
+<Field grouped>
+  <!-- Command type -->
+  <!-- Depending on command -->
+  <p class="control">
+    <Button type="is-primary" on:click={addVenueEvent}>Add command</Button>
+  </p>
+</Field>

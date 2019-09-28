@@ -38,10 +38,20 @@ const createCancel = id => ({
 const createList = venue => ({ command: 'list', venue: venue })
 
 // Convert a `Date` object into `String(yyyy-mm-dd)`
-const dateToString = dateObj => dateObj.format('yyyy-mm-dd')
+const dateToString = dateObj => {
+  // https://stackoverflow.com/a/23593099
+  var month = '' + (dateObj.getMonth() + 1)
+  var day = '' + dateObj.getDate()
+  var year = dateObj.getFullYear()
+
+  if (month.length < 2) month = '0' + month
+  if (day.length < 2) day = '0' + day
+
+  return [year, month, day].join('-')
+}
 
 // Convert `String(yyyy-mm-dd)` into a `Date` object
-const stringToDate = str => Date.parse(str)
+const stringToDate = str => new Date(str)
 
 // Get type of command
 const getType = command => command.command
@@ -98,6 +108,8 @@ function parseJSONlines (json_lines) {
       }
       venueData[query.venue][query.size].push(query.room)
     } else {
+      // if ('start' in query) query.start = stringToDate(query.start)
+      // if ('end' in query) query.end = stringToDate(query.end)
       commands[commandIdxGen++] = query
     }
     commandsOrder = [...Array(commandIdxGen).keys()]

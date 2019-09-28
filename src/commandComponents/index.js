@@ -13,7 +13,6 @@ export default {
   Request,
   resolve (commandObj) {
     let commandLower = getType(commandObj).toLowerCase()
-    console.log(commandLower)
     switch (commandLower) {
       case 'cancel':
         return Cancel

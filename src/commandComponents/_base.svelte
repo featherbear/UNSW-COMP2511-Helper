@@ -11,6 +11,18 @@
     padding-right: 0;
   }
 
+  :global(.hoverOpacity) {
+    opacity: 0.2;
+  }
+
+  :global(.hoverOpacity):not(:hover) {
+    transition: opacity 0.8s;
+  }
+
+  :global(.hoverOpacity):hover {
+    opacity: 1;
+  }
+
   :global(.dragger) {
     cursor: move;
     cursor: grab;
@@ -27,7 +39,7 @@
 
 <tr>
   <td>
-    <Button type="is-danger" outlined>
+    <Button class="hoverOpacity" type="is-danger" outlined>
       <Icon icon="trash-alt" pack="far" />
     </Button>
   </td>

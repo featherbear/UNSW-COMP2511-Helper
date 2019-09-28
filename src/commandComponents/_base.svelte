@@ -1,5 +1,15 @@
 <script>
-  import { Button, Icon } from "svelma";
+  /*
+    // I get an undefined `fe` variable (`fe.c`) using the dist version
+     import { Button, Icon } from "svelma";
+  */
+
+  import Button from "svelma/src/components/Button.svelte";
+  import Icon from "svelma/src/components/Icon.svelte";
+  import { createEventDispatcher } from "svelte";
+  let dispatch = createEventDispatcher();
+
+  export let orderingId;
 </script>
 
 <style>
@@ -37,9 +47,13 @@
   }
 </style>
 
-<tr>
+<tr {orderingId}>
   <td>
-    <Button class="hoverOpacity" type="is-danger" outlined>
+    <Button
+      class="hoverOpacity"
+      type="is-danger"
+      outlined
+      on:click={() => dispatch('delete')}>
       <Icon icon="trash-alt" pack="far" />
     </Button>
   </td>

@@ -1,7 +1,7 @@
 <script>
   import { writable } from "svelte/store";
 
-  const data = writable({ venueData: {}, commands: [] });
+  const data = writable({ venueData: {}, commands: {}, commandsOrder: [] });
 
   import { Icon } from "svelma";
 

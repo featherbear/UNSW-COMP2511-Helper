@@ -14,7 +14,12 @@
       }
     }
 
-    output = [...result, ...$data.commands];
+    let commands = [];
+    for (let idx of $data.commandsOrder) {
+      commands.push($data.commands[idx]);
+    }
+
+    output = [...result, ...commands];
   }
   let copyButtonText = "Copy";
   import { Button } from "svelma";

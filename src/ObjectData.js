@@ -69,9 +69,10 @@ const exampleJSONlines = `{ "command": "room", "venue": "Zoo", "room": "Penguin"
 //       large: [String, ...]
 //     }
 //   },
-//   commands: [
-//     { ... }
-//   ]
+//   commands: {
+//     [i]: { ... }
+//   },
+//   commandsOrder: [ 0 .. i-1]
 // }
 function parseJSONlines (json_lines) {
   let lines = json_lines
@@ -82,26 +83,30 @@ function parseJSONlines (json_lines) {
   lines = lines.map(JSON.parse)
 
   let venueData = {}
-  let commands = []
+  let commands = {}
+  let commandsOrder = []
 
-  for (let command of lines) {
-    if (getType(command) == 'room') {
-      if (!(command.venue in venueData)) {
-        venueData[command.venue] = {
+  let commandIdxGen = 0
+  for (let query of lines) {
+    if (getType(query) == 'room') {
+      if (!(query.venue in venueData)) {
+        venueData[query.venue] = {
           small: [],
           medium: [],
           large: []
         }
       }
-      venueData[command.venue][command.size].push(command.room)
+      venueData[query.venue][query.size].push(query.room)
     } else {
-      commands.push(command)
+      commands[commandIdxGen++] = query
     }
+    commandsOrder = [...Array(commandIdxGen).keys()]
   }
 
   return {
     venueData,
-    commands
+    commands,
+    commandsOrder
   }
 }
 

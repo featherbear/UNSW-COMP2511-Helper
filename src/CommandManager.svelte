@@ -3,16 +3,21 @@
   import commandComponents from "./commandComponents";
 
   let tableRows;
-  import dragula from "dragula";
-  import "dragula/dist/dragula.min.css";
+
+  import Swappable from "@shopify/draggable/lib/swappable.js";
 
   import { onMount } from "svelte";
   onMount(() => {
-    dragula({
-      containers: [tableRows],
-      moves: function(el, container, handle) {
-        return handle.classList.contains("dragger");
+    const swappable = new Swappable(tableRows, {
+      draggable: "tr",
+      handle: ".dragger",
+      mirror: {
+        constrainDimensions: true,
+        xAxis: false
       }
+    });
+    swappable.on("swappable:swapped", function() {
+      // TODO: SWAP
     });
   });
 </script>

@@ -12,8 +12,8 @@
     "svelte": "^3.0.0"
   },
   "dependencies": {
+    "@shopify/draggable": "^1.0.0-beta.8",
     "bulma": "^0.7.5",
-    "dragula": "^3.7.2",
     "rollup-plugin-postcss": "^2.0.3",
     "sirv-cli": "^0.4.4",
     "svelma": "^0.3.0"
